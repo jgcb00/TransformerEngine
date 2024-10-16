@@ -59,7 +59,7 @@ struct AdemamixFunctorMaster {
 
   __device__ __forceinline__ void operator()(index_t chunk_size, volatile int *noop_gmem,
                                              TensorListMetadata<6, is_fp8_type> &tl,  // NOLINT(*)
-                                             const float beta1, const float beta2, const float beta3, const float alpha
+                                             const float beta1, const float beta2, const float beta3, const float alpha,
                                              const float beta1_correction,
                                              const float beta2_correction, 
                                              const float beta3_correction, const float epsilon,
