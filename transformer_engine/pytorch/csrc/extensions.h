@@ -491,6 +491,32 @@ void multi_tensor_adam_capturable_master_cuda(int chunk_size, at::Tensor noop_fl
                                               const int bias_correction, const float weight_decay,
                                               at::Tensor inv_scale);
 
+void multi_tensor_ademamix_cuda(int chunk_size, at::Tensor noop_flag,
+                            std::vector<std::vector<at::Tensor>> tensor_lists, const float lr,
+                            const float beta1, const float beta2, const float beta3, const float alpha, const float epsilon,
+                            const int step, const int mode, const int bias_correction,
+                            const float weight_decay);
+
+void multi_tensor_ademamix_fp8_cuda(int chunk_size, at::Tensor noop_flag,
+                                std::vector<std::vector<at::Tensor>> tensor_lists, const float lr,
+                                const float beta1, const float beta2, const float beta3, const float alpha, const float epsilon,
+                                const int step, const int mode, const int bias_correction,
+                                const float weight_decay, DType fp8_dtype);
+
+void multi_tensor_ademamix_capturable_cuda(int chunk_size, at::Tensor noop_flag,
+                                       std::vector<std::vector<at::Tensor>> tensor_lists,
+                                       at::Tensor lr, const float beta1, const float beta2, const float beta3, const float alpha,
+                                       const float epsilon, at::Tensor step, const int mode,
+                                       const int bias_correction, const float weight_decay,
+                                       at::Tensor inv_scale);
+
+void multi_tensor_ademamix_capturable_master_cuda(int chunk_size, at::Tensor noop_flag,
+                                              std::vector<std::vector<at::Tensor>> tensor_lists,
+                                              at::Tensor lr, const float beta1, const float beta2, const float beta3, const float alpha,
+                                              const float epsilon, at::Tensor step, const int mode,
+                                              const int bias_correction, const float weight_decay,
+                                              at::Tensor inv_scale);
+
 void multi_tensor_sgd_cuda(int chunk_size, at::Tensor noop_flag,
                            std::vector<std::vector<at::Tensor>> tensor_lists, float wd,
                            float momentum, float dampening, float lr, bool nesterov, bool first_run,

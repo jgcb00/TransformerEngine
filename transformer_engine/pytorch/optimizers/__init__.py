@@ -11,8 +11,13 @@ from transformer_engine_torch import (
     multi_tensor_adam_fp8,
     multi_tensor_adam_capturable,
     multi_tensor_adam_capturable_master,
+    multi_tensor_ademamix,
+    multi_tensor_ademamix_fp8,
+    multi_tensor_ademamix_capturable,
+    multi_tensor_ademamix_capturable_master,
     multi_tensor_sgd,
 )
 from .fused_adam import FusedAdam
 from .fused_sgd import FusedSGD
+from .fused_ademamix import FusedAdemamix
 from .multi_tensor_apply import MultiTensorApply, multi_tensor_applier
