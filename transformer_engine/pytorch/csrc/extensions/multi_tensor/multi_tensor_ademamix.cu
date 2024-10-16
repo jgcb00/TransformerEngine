@@ -148,7 +148,7 @@ struct AdemamixFunctorMaster {
           r_m1[ii] = beta1 * r_m1[ii] + (1 - beta1) * r_g[ii];
           r_m2[ii] = beta3 * r_m2[ii] + (1 - beta3) * r_g[ii];
           r_v[ii] = beta2 * r_v[ii] + (1 - beta2) * r_g[ii] * r_g[ii];
-          MATH_T next_m1_unbiased = r_m[ii] / beta1_correction;
+          MATH_T next_m1_unbiased = r_m1[ii] / beta1_correction;
           MATH_T next_m2_unbiased = r_m2[ii] / beta3_correction;
           MATH_T next_v_unbiased = r_v[ii] / beta2_correction;
           MATH_T denom = sqrtf(next_v_unbiased) + epsilon;
@@ -249,7 +249,8 @@ struct AdemamixFunctor {
         } else {
           r_g[ii] = MATH_T(0);
           r_p[ii] = MATH_T(0);
-          r_m[ii] = MATH_T(0);
+          r_m1[ii] = MATH_T(0);
+          r_m2[ii] = MATH_T(0);
           r_v[ii] = MATH_T(0);
         }
       }
