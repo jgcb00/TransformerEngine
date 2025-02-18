@@ -130,7 +130,7 @@ if _flash_attn_version >= _flash_attn_version_required:
     from flex_head_fa.flash_attn_interface import flash_attn_func, flash_attn_varlen_func
     from flex_head_fa.flash_attn_interface import _flash_attn_varlen_forward as _flash_attn_forward
     from flex_head_fa.flash_attn_interface import _flash_attn_varlen_backward as _flash_attn_backward
-    from flash_attn_2_cuda import varlen_bwd as flash_attn_cuda_bwd
+    from flex_head_fa_2_cuda import varlen_bwd as flash_attn_cuda_bwd
     
     import flex_head_fa.flash_attn_interface as flex_head_fa
 

@@ -172,7 +172,7 @@ To install the latest stable version of Transformer Engine,
 
 .. code-block:: bash
 
-    pip install git+https://github.com/NVIDIA/TransformerEngine.git@stable
+    pip install git+https://github.com/jgcb00/TransformerEngine.git@ademamix_v1.11
 
 This will automatically detect if any supported deep learning frameworks are installed and build Transformer Engine support for them. To explicitly specify frameworks, set the environment variable NVTE_FRAMEWORK to a comma-separated list (e.g. NVTE_FRAMEWORK=jax,pytorch,paddle).
 
