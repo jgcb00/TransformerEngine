@@ -42,8 +42,8 @@ def setup_paddle_extension(
     cxx_flags = ["-O3"]
     nvcc_flags = [
         "-O3",
-        "-gencode",
-        "arch=compute_70,code=sm_70",
+        #"-gencode",
+        #"arch=compute_70,code=sm_70",
         "-U__CUDA_NO_HALF_OPERATORS__",
         "-U__CUDA_NO_HALF_CONVERSIONS__",
         "-U__CUDA_NO_BFLOAT16_OPERATORS__",

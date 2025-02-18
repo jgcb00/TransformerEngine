@@ -62,8 +62,8 @@ def setup_pytorch_extension(
 
     cuda_architectures = cuda_archs()
 
-    if "70" in cuda_architectures:
-        nvcc_flags.extend(["-gencode", "arch=compute_70,code=sm_70"])
+    #if "70" in cuda_architectures:
+    #    nvcc_flags.extend(["-gencode", "arch=compute_70,code=sm_70"])
 
     # Version-dependent CUDA options
     try:
@@ -82,8 +82,8 @@ def setup_pytorch_extension(
 
         if "80" in cuda_architectures:
             nvcc_flags.extend(["-gencode", "arch=compute_80,code=sm_80"])
-        if "90" in cuda_architectures:
-            nvcc_flags.extend(["-gencode", "arch=compute_90,code=sm_90"])
+        #if "90" in cuda_architectures:
+        #    nvcc_flags.extend(["-gencode", "arch=compute_90,code=sm_90"])
 
     # Libraries
     library_dirs = []
