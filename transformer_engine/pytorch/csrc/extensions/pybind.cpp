@@ -229,6 +229,19 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
         "Compute and apply gradient update to parameters for Ademamix optimizer with CUDA graph "
         "support, LR scheduling and FP32 master weights",
         py::call_guard<py::gil_scoped_release>());
+  m.def("multi_tensor_spam", &multi_tensor_spam_cuda,
+        "Compute and apply gradient update to parameters for Spam optimizer",
+        py::call_guard<py::gil_scoped_release>());
+  m.def("multi_tensor_spam_fp8", &multi_tensor_spam_fp8_cuda,
+        "Compute and apply gradient update to parameters for Spam optimizer",
+        py::call_guard<py::gil_scoped_release>());
+  m.def("multi_tensor_spam_capturable", &multi_tensor_spam_capturable_cuda,
+        "Compute and apply gradient update to parameters for Spam optimizer with CUDA graph "
+        "support and LR scheduling",
+        py::call_guard<py::gil_scoped_release>());
+  m.def("multi_tensor_spam_capturable_master", &multi_tensor_spam_capturable_master_cuda,
+        "Compute and apply gradient update to parameters for Spam optimizer with CUDA graph "
+        "support, LR scheduling and FP32 master weights",
   m.def("multi_tensor_sgd", &multi_tensor_sgd_cuda,
         "Fused SGD optimizer for list of contiguous tensors",
         py::call_guard<py::gil_scoped_release>());
