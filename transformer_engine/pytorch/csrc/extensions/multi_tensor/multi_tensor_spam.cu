@@ -126,7 +126,7 @@ struct SpamFunctorMaster {
       }
 #pragma unroll
       for (int ii = 0; ii < ILP; ii++) {
-        if (mode == spam_MODE_0) {  // L2
+        if (mode == SPAM_MODE_0) {  // L2
           MATH_T gss = r_g[ii] * r_g[ii] / r_v[ii];
           if (gss > theta) {
             r_g[ii] = copysignf(sqrtf(theta * r_v[ii]), r_g[ii]);
@@ -244,7 +244,7 @@ struct spamFunctor {
       }
 #pragma unroll
       for (int ii = 0; ii < ILP; ii++) {
-        if (mode == spam_MODE_0) {  // L2
+        if (mode == SPAM_MODE_0) {  // L2
           MATH_T gss = r_g[ii] * r_g[ii] / r_v[ii];
           if (gss > theta) {
             r_g[ii] = copysignf(sqrtf(theta * r_v[ii]), r_g[ii]);
@@ -346,7 +346,7 @@ struct spamCapturableFunctor {
       }
 #pragma unroll
       for (int ii = 0; ii < ILP; ii++) {
-        if (mode == spam_MODE_0) {  // L2
+        if (mode == SPAM_MODE_0) {  // L2
           MATH_T gss = r_g[ii] * r_g[ii] / r_v[ii];
           if (gss > theta) {
             r_g[ii] = copysignf(sqrtf(theta * r_v[ii]), r_g[ii]);
@@ -451,7 +451,7 @@ struct spamCapturableMasterFunctor {
       }
 #pragma unroll
       for (int ii = 0; ii < ILP; ii++) {
-        if (mode == spam_MODE_0) {  // L2
+        if (mode == SPAM_MODE_0) {  // L2
           MATH_T gss = r_g[ii] * r_g[ii] / r_v[ii];
           if (gss > theta) {
             r_g[ii] = copysignf(sqrtf(theta * r_v[ii]), r_g[ii]);
