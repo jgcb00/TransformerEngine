@@ -188,7 +188,7 @@ struct SpamFunctorMaster {
 };
 
 template <typename T, typename FULL_T, typename index_t>
-struct spamFunctor {
+struct SpamFunctor {
   __device__ __forceinline__ void operator()(index_t chunk_size, volatile int *noop_gmem,
                                              TensorListMetadata<4> &tl,  // NOLINT(*)
                                              const float beta1, const float beta2, const float theta,
@@ -536,7 +536,7 @@ void multi_tensor_spam_cuda(int chunk_size, at::Tensor noop_flag,
       DISPATCH_DOUBLE_FLOAT_HALF_AND_BFLOAT(
           p_in_type, 0, "spam",
           multi_tensor_apply<4>((int64_t)BLOCK_SIZE, (int64_t)chunk_size, noop_flag, tensor_lists,
-                                spamFunctor<scalar_t_0, float, int64_t>(), beta1, beta2, theta,
+                                SpamFunctor<scalar_t_0, float, int64_t>(), beta1, beta2, theta,
                                 bias_correction1, bias_correction2, epsilon, lr, (spamMode_t)mode,
                                 weight_decay);)
     } else {
@@ -548,7 +548,7 @@ void multi_tensor_spam_cuda(int chunk_size, at::Tensor noop_flag,
               g_in_type, 1, "spam",
               multi_tensor_apply<5>((int64_t)BLOCK_SIZE, (int64_t)chunk_size, noop_flag,
                                     tensor_lists,
-                                    spamFunctorMaster<scalar_t_0, scalar_t_1, float, int64_t>(),
+                                    SpamFunctorMaster<scalar_t_0, scalar_t_1, float, int64_t>(),
                                     beta1, beta2, theta, bias_correction1, bias_correction2, epsilon, lr,
                                     (spamMode_t)mode, weight_decay);));
     }
@@ -558,7 +558,7 @@ void multi_tensor_spam_cuda(int chunk_size, at::Tensor noop_flag,
       DISPATCH_DOUBLE_FLOAT_HALF_AND_BFLOAT(
           p_in_type, 0, "spam",
           multi_tensor_apply<4>(BLOCK_SIZE, chunk_size, noop_flag, tensor_lists,
-                                spamFunctor<scalar_t_0, float, int32_t>(), beta1, beta2, theta,
+                                SpamFunctor<scalar_t_0, float, int32_t>(), beta1, beta2, theta,
                                 bias_correction1, bias_correction2, epsilon, lr, (spamMode_t)mode,
                                 weight_decay);)
     } else {
@@ -568,7 +568,7 @@ void multi_tensor_spam_cuda(int chunk_size, at::Tensor noop_flag,
           DISPATCH_DOUBLE_FLOAT_HALF_AND_BFLOAT(
               g_in_type, 1, "spam",
               multi_tensor_apply<5>(BLOCK_SIZE, chunk_size, noop_flag, tensor_lists,
-                                    spamFunctorMaster<scalar_t_0, scalar_t_1, float, int32_t>(),
+                                    SpamFunctorMaster<scalar_t_0, scalar_t_1, float, int32_t>(),
                                     beta1, beta2, theta, bias_correction1, bias_correction2, epsilon, lr,
                                     (spamMode_t)mode, weight_decay);));
     }
@@ -620,7 +620,7 @@ void multi_tensor_spam_fp8_cuda(int chunk_size, at::Tensor noop_flag,
             g_in_type, 0, "spam",
             multi_tensor_apply<5, true>(
                 (int64_t)BLOCK_SIZE, (int64_t)chunk_size, noop_flag, tensor_lists,
-                spamFunctorMaster<FP8_T, scalar_t_0, float, int64_t>(), beta1, beta2, theta,
+                SpamFunctorMaster<FP8_T, scalar_t_0, float, int64_t>(), beta1, beta2, theta,
                 bias_correction1, bias_correction2, epsilon, lr, (spamMode_t)mode, weight_decay);));
   } else {
     TRANSFORMER_ENGINE_TYPE_SWITCH_FP8ONLY(
@@ -628,7 +628,7 @@ void multi_tensor_spam_fp8_cuda(int chunk_size, at::Tensor noop_flag,
         DISPATCH_DOUBLE_FLOAT_HALF_AND_BFLOAT(
             g_in_type, 0, "spam",
             multi_tensor_apply<5, true>(BLOCK_SIZE, chunk_size, noop_flag, tensor_lists,
-                                        spamFunctorMaster<FP8_T, scalar_t_0, float, int32_t>(),
+                                        SpamFunctorMaster<FP8_T, scalar_t_0, float, int32_t>(),
                                         beta1, beta2, theta, bias_correction1, bias_correction2, epsilon,
                                         lr, (spamMode_t)mode, weight_decay);));
   }
