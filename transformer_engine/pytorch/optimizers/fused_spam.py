@@ -86,7 +86,7 @@ class FusedSpam(torch.optim.Optimizer):
         lr=1e-3,
         bias_correction=True,
         betas=(0.9, 0.999),
-        thetha=5000,
+        theta=5000.0,
         eps=1e-8,
         adam_w_mode=True,
         weight_decay=0.0,
@@ -105,7 +105,7 @@ class FusedSpam(torch.optim.Optimizer):
             lr=lr,
             bias_correction=bias_correction,
             betas=betas,
-            thetha=thetha,
+            theta=theta,
             eps=eps,
             weight_decay=weight_decay,
         )
@@ -131,10 +131,10 @@ class FusedSpam(torch.optim.Optimizer):
 
         # Skip buffer
         self._dummy_overflow_buf = torch.tensor([0], dtype=torch.int, device="cuda")
-        self.multi_tensor_adam = tex.multi_tensor_adam
-        self.multi_tensor_adam_fp8 = tex.multi_tensor_adam_fp8
-        self.multi_tensor_adam_capturable = tex.multi_tensor_adam_capturable
-        self.multi_tensor_adam_capturable_master = tex.multi_tensor_adam_capturable_master
+        self.multi_tensor_spam = tex.multi_tensor_spam
+        self.multi_tensor_spam_fp8 = tex.multi_tensor_spam_fp8
+        self.multi_tensor_spam_capturable = tex.multi_tensor_spam_capturable
+        self.multi_tensor_spam_capturable_master = tex.multi_tensor_spam_capturable_master
 
     def zero_grad(self):
         if self.set_grad_none:
@@ -144,7 +144,7 @@ class FusedSpam(torch.optim.Optimizer):
         else:
             super().zero_grad()
 
-    def step(self, closure=None, grad_scaler=None):
+    def step(self, step=1, closure=None, grad_scaler=None):
         """Performs a single optimization step.
 
         Arguments:
@@ -165,7 +165,7 @@ class FusedSpam(torch.optim.Optimizer):
             device = group["params"][0].device
             bias_correction = 1 if group["bias_correction"] else 0
             beta1, beta2 = group["betas"]
-            thetha = group["thetha"]
+            theta = group["theta"]
 
             # assume same step across group now to simplify things
             # per parameter step can be easily support by making it tensor, or pass list into kernel
@@ -208,13 +208,13 @@ class FusedSpam(torch.optim.Optimizer):
                 state = self.state[p]
 
                 # State initialization
-                if len(state) == 0:
+                if len(state) == 0 or step % 500 == 0:
                     # Exponential moving average of gradient values
                     state["exp_avg"] = torch.zeros_like(p.data).float()
                     # Exponential moving average of squared gradient values
                     state["exp_avg_sq"] = torch.zeros_like(p.data).float()
                     # Master weights
-                    if self.master_weights and p.dtype != torch.float32:
+                    if self.master_weights and p.dtype != torch.float32 and len(state) == 0:
                         # model weights can be fp32/bf16/fp16/fp8
                         # If it's fp32, it has no corresponding master weights
                         state["master_param"] = self.master_weights[master_param_idx]
@@ -289,7 +289,7 @@ class FusedSpam(torch.optim.Optimizer):
                     group["lr"],
                     beta1,
                     beta2,
-                    thetha,
+                    theta,
                     group["eps"],
                     group["step"],
                     self.adam_w_mode,
@@ -363,7 +363,7 @@ class FusedSpam(torch.optim.Optimizer):
                         v_of_f16_model,
                         p_main_of_f16_model,
                     ]
-                    apply_multi_tensor_spam(self.multi_tensor_adam, tensor_lists)
+                    apply_multi_tensor_spam(self.multi_tensor_spam, tensor_lists)
                 if len(p_fp8_model) > 0:
                     tensor_lists = [
                         g_of_fp8_model,
@@ -375,7 +375,7 @@ class FusedSpam(torch.optim.Optimizer):
                         amaxes,
                         scale_invs,
                     ]
-                    apply_multi_tensor_spam(self.multi_tensor_adam_fp8, tensor_lists, out_dtype)
+                    apply_multi_tensor_spam(self.multi_tensor_spam_fp8, tensor_lists, out_dtype)
                 if len(p_f32_model) > 0:
                     tensor_lists = [
                         g_of_f32_model,
@@ -383,13 +383,13 @@ class FusedSpam(torch.optim.Optimizer):
                         m_of_f32_model,
                         v_of_f32_model,
                     ]
-                    apply_multi_tensor_spam(self.multi_tensor_adam, tensor_lists)
+                    apply_multi_tensor_spam(self.multi_tensor_spam, tensor_lists)
             else:  # self.master_weights=False and self.capturable=False
                 if len(p_f16_model) > 0:
                     tensor_lists = [g_of_f16_model, p_f16_model, m_of_f16_model, v_of_f16_model]
-                    apply_multi_tensor_spam(self.multi_tensor_adam, tensor_lists)
+                    apply_multi_tensor_spam(self.multi_tensor_spam, tensor_lists)
                 if len(p_f32_model) > 0:
                     tensor_lists = [g_of_f32_model, p_f32_model, m_of_f32_model, v_of_f32_model]
-                    apply_multi_tensor_spam(self.multi_tensor_adam, tensor_lists)
+                    apply_multi_tensor_spam(self.multi_tensor_spam, tensor_lists)
 
         return loss

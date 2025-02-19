@@ -23,8 +23,8 @@
 #define THREADS_PER_WARP 32
 
 typedef enum {
-  spam_MODE_0 = 0,  // L2 regularization mode
-  spam_MODE_1 = 1   // Decoupled weight decay mode(spamW)
+  SPAM_MODE_0 = 0,  // L2 regularization mode
+  SPAM_MODE_1 = 1   // Decoupled weight decay mode(AdamW)
 } spamMode_t;
 
 using MATH_T = float;
@@ -54,7 +54,7 @@ template <>
 struct FP8Data<false> {};
 
 template <typename PARAM_T, typename GRAD_T, typename FULL_T, typename index_t>
-struct spamFunctorMaster {
+struct SpamFunctorMaster {
   static constexpr bool is_fp8_type = is_fp8<PARAM_T>::value;
 
   __device__ __forceinline__ void operator()(index_t chunk_size, volatile int *noop_gmem,
